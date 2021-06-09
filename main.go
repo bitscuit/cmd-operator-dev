@@ -31,7 +31,9 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
+	certmanagerk8siov1alpha1 "github.com/komish/cmd-operator-dev/apis/certmanager.k8s.io/v1alpha1"
 	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
+	certmanagerk8siocontroller "github.com/komish/cmd-operator-dev/controllers/certmanager.k8s.io"
 	"github.com/komish/cmd-operator-dev/controllers/operators/alpha1certmanager"
 	"github.com/komish/cmd-operator-dev/controllers/operators/certmanagerdeployment"
 	"github.com/komish/cmd-operator-dev/controllers/operators/podrefresher"
@@ -54,6 +56,7 @@ func init() {
 
 	utilruntime.Must(operatorsv1alpha1.AddToScheme(scheme))
 	utilruntime.Must(corev1.AddToScheme(scheme))
+	utilruntime.Must(certmanagerk8siov1alpha1.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
@@ -121,6 +124,14 @@ func main() {
 	} else {
 		setupLog.Info("Pod refresh controller is disabled")
 
+	}
+	if err = (&certmanagerk8siocontroller.CertificateReconciler{
+		Client: mgr.GetClient(),
+		Log:    ctrl.Log.WithName("controllers").WithName("Certificate"),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "Certificate")
+		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder
 
