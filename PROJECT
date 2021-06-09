@@ -1,12 +1,13 @@
 domain: redhat.io
 layout: go.kubebuilder.io/v2
+multigroup: true
 projectName: cmd-operator-dev
 repo: github.com/komish/cmd-operator-dev
 resources:
-- group: operators
+- crdVersion: v1
+  group: operators
   kind: CertManagerDeployment
   version: v1alpha1
-  crdVersion: v1
 version: 3-alpha
 plugins:
   go.sdk.operatorframework.io/v2-alpha: {}

@@ -12,7 +12,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 )
 
 func TestMergeMaps(t *testing.T) {

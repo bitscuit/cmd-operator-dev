@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/go-logr/logr"
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 	"github.com/komish/cmd-operator-dev/cmdoputils"
-	"github.com/komish/cmd-operator-dev/controllers/componentry"
+	"github.com/komish/cmd-operator-dev/controllers/operators/componentry"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package podrefresher
+package certmanagerdeployment
 
 import (
 	"context"
@@ -23,6 +23,7 @@ import (
 	"time"
 
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	. "github.com/onsi/ginkgo"
@@ -37,9 +38,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
-	"github.com/komish/cmd-operator-dev/cmdoputils"
-	"github.com/komish/cmd-operator-dev/controllers/componentry"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -50,20 +49,12 @@ var cfg *rest.Config
 var k8sClient client.Client
 var testEnv *envtest.Environment
 var identifier int64
-var cr = operatorsv1alpha1.CertManagerDeployment{
-	ObjectMeta: metav1.ObjectMeta{
-		Name: "cluster",
-	},
-	Spec: operatorsv1alpha1.CertManagerDeploymentSpec{
-		Version: cmdoputils.GetStringPointer(componentry.CertManagerDefaultVersion),
-	},
-}
 
 func TestAPIs(t *testing.T) {
 	RegisterFailHandler(Fail)
 
 	RunSpecsWithDefaultAndCustomReporters(t,
-		"PodRefresher Controller Suite",
+		"CertManagerDeployment Controller Suite",
 		[]Reporter{printer.NewlineReporter{}})
 }
 
@@ -104,19 +95,23 @@ var _ = BeforeSuite(func(done Done) {
 	Expect(err).ToNot(HaveOccurred())
 	Expect(k8sClient).ToNot(BeNil())
 
-	// This suite requires an instance of CertManagerDeployment
-	Expect(k8sClient.Create(context.TODO(), &cr)).To(Succeed())
-	// TODO we need certificate and issuer for these tests
-	// but they're not handled currently
-
 	close(done)
 }, 60)
 
 var _ = AfterSuite(func() {
-	By("tearing down dependencies")
-	Expect(k8sClient.Delete(context.TODO(), &cr)).To(Succeed())
+	By("tearing down controller-managed CRDs")
+	// clean up controller-managed crds
+	for _, crdToDelete := range crds {
+		err := k8sClient.Delete(context.TODO(), &apiextv1.CustomResourceDefinition{ObjectMeta: metav1.ObjectMeta{Name: crdToDelete}})
+		if err != nil {
+			Expect(apierrors.IsNotFound(err)).To(BeTrue(), "resource IsNotFound is acceptable during clean up steps")
+		} else {
+			Expect(err).To(BeNil())
+		}
+	}
 
 	By("tearing down the test environment")
+
 	err := testEnv.Stop()
 	Expect(err).ToNot(HaveOccurred())
 })

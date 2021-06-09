@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"github.com/go-logr/logr"
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 	"github.com/komish/cmd-operator-dev/cmdoputils"
-	"github.com/komish/cmd-operator-dev/controllers/componentry"
+	"github.com/komish/cmd-operator-dev/controllers/operators/componentry"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	apiextv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"

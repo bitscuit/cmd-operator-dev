@@ -20,8 +20,8 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
-	"github.com/komish/cmd-operator-dev/controllers/componentry"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
+	"github.com/komish/cmd-operator-dev/controllers/operators/componentry"
 )
 
 var (

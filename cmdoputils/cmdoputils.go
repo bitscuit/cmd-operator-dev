@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"sort"
 
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 )
 
 // MergeMaps will take two maps (dest, addition) and merge all keys/values from "addition"
@@ -37,7 +37,7 @@ func CertManagerVersionIsSupported(cr *operatorsv1alpha1.CertManagerDeployment, 
 
 // GetSupportedCertManagerVersions returns a list of the versions of cert-manager supported by the operator.
 // The supported versions are defined in
-// github.com/komish/cmd-operator-dev/controllers/componentry
+// github.com/komish/cmd-operator-dev/controllers/operators/componentry
 func GetSupportedCertManagerVersions(matrix map[string]bool) []string {
 	versions := make([]string, len(matrix))
 	i := 0

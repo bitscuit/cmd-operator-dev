@@ -3,11 +3,11 @@ package configs
 import (
 	"fmt"
 
-	v1_2_0defaults "github.com/komish/cmd-operator-dev/controllers/configs/v1_2_0/defaults"
-	v1_2_0types "github.com/komish/cmd-operator-dev/controllers/configs/v1_2_0/types"
+	v1_2_0defaults "github.com/komish/cmd-operator-dev/controllers/operators/configs/v1_2_0/defaults"
+	v1_2_0types "github.com/komish/cmd-operator-dev/controllers/operators/configs/v1_2_0/types"
 
-	v1_1_0defaults "github.com/komish/cmd-operator-dev/controllers/configs/v1_1_0/defaults"
-	v1_1_0types "github.com/komish/cmd-operator-dev/controllers/configs/v1_1_0/types"
+	v1_1_0defaults "github.com/komish/cmd-operator-dev/controllers/operators/configs/v1_1_0/defaults"
+	v1_1_0types "github.com/komish/cmd-operator-dev/controllers/operators/configs/v1_1_0/types"
 
 	"k8s.io/apimachinery/pkg/runtime"
 )

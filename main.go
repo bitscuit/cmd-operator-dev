@@ -31,9 +31,10 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
-	"github.com/komish/cmd-operator-dev/controllers/certmanagerdeployment"
-	"github.com/komish/cmd-operator-dev/controllers/podrefresher"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
+	"github.com/komish/cmd-operator-dev/controllers/operators/alpha1certmanager"
+	"github.com/komish/cmd-operator-dev/controllers/operators/certmanagerdeployment"
+	"github.com/komish/cmd-operator-dev/controllers/operators/podrefresher"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -58,6 +59,7 @@ func init() {
 
 func main() {
 	controllerNamePodRefresher := "podrefresh-controller"
+	controllerNameAlpha1CertManager := "alpha1certmanager-controller"
 	controllerNameCertManagerDeployment := "certmanagerdeployment-controller"
 	var metricsAddr string
 	var enableLeaderElection bool
@@ -91,6 +93,16 @@ func main() {
 		EventRecorder: mgr.GetEventRecorderFor(controllerNameCertManagerDeployment),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "CertManagerDeployment")
+		os.Exit(1)
+	}
+
+	if err = (&alpha1certmanager.Alpha1CertManagerReconciler{
+		Client:        mgr.GetClient(),
+		Log:           ctrl.Log.WithName("controllers").WithName(controllerNameAlpha1CertManager),
+		Scheme:        mgr.GetScheme(),
+		EventRecorder: mgr.GetEventRecorderFor(controllerNameAlpha1CertManager),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "alpha1CertManager")
 		os.Exit(1)
 	}
 

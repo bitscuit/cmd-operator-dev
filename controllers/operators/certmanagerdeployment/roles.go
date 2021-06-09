@@ -1,9 +1,9 @@
 package certmanagerdeployment
 
 import (
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 	"github.com/komish/cmd-operator-dev/cmdoputils"
-	"github.com/komish/cmd-operator-dev/controllers/componentry"
+	"github.com/komish/cmd-operator-dev/controllers/operators/componentry"
 	rbacv1 "k8s.io/api/rbac/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )

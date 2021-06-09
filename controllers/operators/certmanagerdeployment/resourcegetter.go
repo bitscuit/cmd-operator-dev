@@ -1,6 +1,6 @@
 package certmanagerdeployment
 
-import operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
+import operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 
 // ResourceGetter facilitates getting various owned resources expected by
 // a CertManagerDeployment CR.

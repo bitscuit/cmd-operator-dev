@@ -10,10 +10,10 @@ import (
 
 	"github.com/go-logr/logr"
 	"github.com/imdario/mergo"
-	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/api/v1alpha1"
+	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 	"github.com/komish/cmd-operator-dev/cmdoputils"
-	"github.com/komish/cmd-operator-dev/controllers/componentry"
-	certmanagerconfigs "github.com/komish/cmd-operator-dev/controllers/configs"
+	"github.com/komish/cmd-operator-dev/controllers/operators/componentry"
+	certmanagerconfigs "github.com/komish/cmd-operator-dev/controllers/operators/configs"
 	"github.com/openshift/library-go/pkg/operator/resource/resourcemerge"
 	"sigs.k8s.io/controller-runtime/pkg/controller/controllerutil"
 

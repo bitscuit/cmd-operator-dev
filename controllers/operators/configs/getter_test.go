@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"github.com/komish/cmd-operator-dev/controllers/componentry"
+	"github.com/komish/cmd-operator-dev/controllers/operators/componentry"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"k8s.io/apimachinery/pkg/runtime"
