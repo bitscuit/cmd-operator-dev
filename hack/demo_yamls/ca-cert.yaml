@@ -4,4 +4,4 @@ metadata:
   name: playback-demo
   namespace: cmd-operator-system
 spec:
-  name: "test-cert"
+  name: "playback-ca-cert"

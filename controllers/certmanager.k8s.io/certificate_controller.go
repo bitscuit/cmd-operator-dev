@@ -21,9 +21,11 @@ import (
 	"time"
 
 	"github.com/go-logr/logr"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	v1certmgr "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
 	v1certmgrmeta "github.com/jetstack/cert-manager/pkg/apis/meta/v1"
@@ -46,12 +48,36 @@ func (r *CertificateReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error)
 	_ = context.Background()
 	_ = r.Log.WithValues("certificate", req.NamespacedName)
 
-	r.Log.Info("##### DEBUG ##### testing certificate controller")
+	r.Log.Info("##### DEBUG ##### Reconciling alpha1 Certificate")
+
+	r.Log.Info("Get Certificate fields")
+
+	alpha1Cert := &certmanagerk8siov1alpha1.Certificate{}
+	err := r.Get(context.TODO(), req.NamespacedName, alpha1Cert)
+	if err != nil {
+		if apierrors.IsNotFound(err) {
+			// Request object not found, could have been deleted after reconcile req.
+			// Owned objects are automatically garbage collected. For additional cleanup logic use finalizers.
+			// Return and don't requeue
+			return reconcile.Result{}, nil
+		}
+		// Error reading the object - requeue the req.
+		return reconcile.Result{}, err
+	}
+
+	r.Log.Info("Create v1 Certificate")
+
 	certificate := v1certmgr.Certificate{
-		TypeMeta:   metav1.TypeMeta{Kind: "Certificate", APIVersion: "cert-manager.io/v1"},
-		ObjectMeta: metav1.ObjectMeta{Name: "test-conversion", Namespace: "cmd-operator-system"},
+		TypeMeta: metav1.TypeMeta{Kind: "Certificate", APIVersion: "cert-manager.io/v1"},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      alpha1Cert.Name,
+			Namespace: alpha1Cert.Namespace,
+			Annotations: map[string]string{
+				"ibm-cert-manager-operator-generated": "true",
+			},
+		},
 		Spec: v1certmgr.CertificateSpec{
-			CommonName: "test-ca-cert",
+			CommonName: alpha1Cert.Spec.Name,
 			Duration:   &metav1.Duration{Duration: time.Hour},
 			IssuerRef: v1certmgrmeta.ObjectReference{
 				Name:  "demo-ss-issuer",
@@ -60,12 +86,14 @@ func (r *CertificateReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error)
 			},
 			IsCA:        true,
 			RenewBefore: &metav1.Duration{Duration: time.Minute * 59},
-			SecretName:  "test-ca-cert-secret",
+			SecretName:  alpha1Cert.Spec.Name + "-secret",
 		},
 	}
 	if err := r.Client.Create(context.TODO(), &certificate); err != nil {
-		r.Log.Error(err, "##### DEBUG ##### creating v1 Cert")
+		r.Log.Error(err, "##### DEBUG ##### Failed to create v1 Certificate")
 	}
+
+	r.Log.Info("##### DEBUG ##### Finished reconciling alpha1 Certificate")
 
 	return ctrl.Result{}, nil
 }
