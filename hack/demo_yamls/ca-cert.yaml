@@ -1,7 +1,14 @@
 apiVersion: certmanager.k8s.io/v1alpha1
 kind: Certificate
 metadata:
-  name: playback-demo
+  name: playback-demo-ca-cert
   namespace: cmd-operator-system
 spec:
-  name: "playback-ca-cert"
+  issuerRef:
+    name: playback-demo-ss-issuer
+    kind: Issuer
+  secretName: playback-demo-ca-cert-secret
+  isCA: true
+  commonName: playback-demo-ca-cert
+  duration: 1h
+  renewBefore: 59m45s

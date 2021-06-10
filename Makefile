@@ -183,3 +183,4 @@ demo: deploy
 .PHONY: undemo
 undemo:
 	@${SCRIPTS_LOCATION}/tear-down.sh ${SCRIPTS_LOCATION}
+	make undeploy

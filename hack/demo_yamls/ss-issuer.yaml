@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: demo-ss-issuer
+  name: playback-demo-ss-issuer
   namespace: cmd-operator-system
 spec:
   selfSigned: {}

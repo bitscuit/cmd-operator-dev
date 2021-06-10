@@ -18,7 +18,6 @@ package controllers
 
 import (
 	"context"
-	"time"
 
 	"github.com/go-logr/logr"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -65,7 +64,7 @@ func (r *CertificateReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error)
 		return reconcile.Result{}, err
 	}
 
-	r.Log.Info("Create v1 Certificate")
+	r.Log.Info("Converting to v1 Certificate")
 
 	certificate := v1certmgr.Certificate{
 		TypeMeta: metav1.TypeMeta{Kind: "Certificate", APIVersion: "cert-manager.io/v1"},
@@ -77,16 +76,16 @@ func (r *CertificateReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error)
 			},
 		},
 		Spec: v1certmgr.CertificateSpec{
-			CommonName: alpha1Cert.Spec.Name,
-			Duration:   &metav1.Duration{Duration: time.Hour},
+			CommonName: alpha1Cert.Spec.CommonName,
+			Duration:   &metav1.Duration{Duration: alpha1Cert.Spec.Duration.Duration},
 			IssuerRef: v1certmgrmeta.ObjectReference{
-				Name:  "demo-ss-issuer",
-				Kind:  "Issuer",
-				Group: "cert-manager.io",
+				Name:  alpha1Cert.Spec.IssuerRef.Name,
+				Kind:  alpha1Cert.Spec.IssuerRef.Kind,
+				Group: alpha1Cert.Spec.IssuerRef.Group,
 			},
-			IsCA:        true,
-			RenewBefore: &metav1.Duration{Duration: time.Minute * 59},
-			SecretName:  alpha1Cert.Spec.Name + "-secret",
+			IsCA:        alpha1Cert.Spec.IsCA,
+			RenewBefore: &metav1.Duration{Duration: alpha1Cert.Spec.RenewBefore.Duration},
+			SecretName:  alpha1Cert.Spec.CommonName,
 		},
 	}
 	if err := r.Client.Create(context.TODO(), &certificate); err != nil {
