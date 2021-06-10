@@ -29,7 +29,7 @@ type CertificateSpec struct {
 	// Important: Run "make" to regenerate code after modifying this file
 
 	// Foo is an example field of Certificate. Edit Certificate_types.go to remove/update
-	Size int32 `json:"size"`
+	Name string `json:"name"`
 }
 
 // CertificateStatus defines the observed state of Certificate

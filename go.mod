@@ -6,6 +6,7 @@ require (
 	github.com/go-logr/logr v0.2.1
 	github.com/go-logr/zapr v0.2.0 // indirect
 	github.com/imdario/mergo v0.3.10
+	github.com/jetstack/cert-manager v1.3.1
 	github.com/onsi/ginkgo v1.14.1
 	github.com/onsi/gomega v1.10.2
 	github.com/openshift/library-go v0.0.0-20200930190915-f7cb85f605db

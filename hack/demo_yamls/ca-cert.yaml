@@ -4,5 +4,4 @@ metadata:
   name: playback-demo
   namespace: cmd-operator-system
 spec:
-  # Add fields here
   name: "test-cert"

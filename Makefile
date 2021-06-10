@@ -172,3 +172,14 @@ clean-certmanager-crds:
 		issuers.cert-manager.io \
 		challenges.acme.cert-manager.io \
 		orders.acme.cert-manager.io
+
+SCRIPTS_LOCATION=$(shell pwd)/hack
+BRINGUP_OPTS :=
+# Bring up everything needed for demo
+.PHONY: demo
+demo: deploy
+	${SCRIPTS_LOCATION}/bring-up.sh ${SCRIPTS_LOCATION} ${BRINGUP_OPTS}
+
+.PHONY: undemo
+undemo:
+	@${SCRIPTS_LOCATION}/tear-down.sh ${SCRIPTS_LOCATION}

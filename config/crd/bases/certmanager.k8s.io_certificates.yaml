@@ -36,13 +36,12 @@ spec:
           spec:
             description: CertificateSpec defines the desired state of Certificate
             properties:
-              size:
+              name:
                 description: Foo is an example field of Certificate. Edit Certificate_types.go
                   to remove/update
-                format: int32
-                type: integer
+                type: string
             required:
-            - size
+            - name
             type: object
           status:
             description: CertificateStatus defines the observed state of Certificate

@@ -31,6 +31,8 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 
+	v1certmgr "github.com/jetstack/cert-manager/pkg/apis/certmanager/v1"
+	v1certmgrmeta "github.com/jetstack/cert-manager/pkg/apis/meta/v1"
 	certmanagerk8siov1alpha1 "github.com/komish/cmd-operator-dev/apis/certmanager.k8s.io/v1alpha1"
 	operatorsv1alpha1 "github.com/komish/cmd-operator-dev/apis/operators/v1alpha1"
 	certmanagerk8siocontroller "github.com/komish/cmd-operator-dev/controllers/certmanager.k8s.io"
@@ -57,6 +59,8 @@ func init() {
 	utilruntime.Must(operatorsv1alpha1.AddToScheme(scheme))
 	utilruntime.Must(corev1.AddToScheme(scheme))
 	utilruntime.Must(certmanagerk8siov1alpha1.AddToScheme(scheme))
+	utilruntime.Must(v1certmgr.AddToScheme(scheme))
+	utilruntime.Must(v1certmgrmeta.AddToScheme(scheme))
 	// +kubebuilder:scaffold:scheme
 }
 
