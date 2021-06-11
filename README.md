@@ -17,6 +17,7 @@ Alternatively, you may choose to inspect the `hack/bring-up.sh` and `hack/tear-d
 You should not need to rebuild the image or push the image to a registry. The operator deployment is currently set to deploy the image from `quay.io/bitscuit/cmd-operator-dev-controller:latest`, which should work fine.
 
 ```console
+make install
 make demo
 ```
 
